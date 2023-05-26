@@ -1,0 +1,46 @@
+<div class="container">
+    <h2>Registration Form</h2>
+    {{regForm.value| json}}
+    <form [formGroup]="regForm">
+        <div class="form-group my-2 py-2">
+            <label>Username</label>
+            <input formControlName="username" type="text" class="form-control" [class.is-invalid]="f.username.invalid && f.username.touched">
+            <!-- <small class="text-danger" [class.d-none]="f.username.valid || f.username.untouched">Username is Required</small> -->
+            <div *ngIf="f.username.invalid && f.username.touched">
+                <small class="text-danger" *ngIf="f.username.errors?.required">Username is required</small>
+                <small class="text-danger" *ngIf="f.username.errors?.minlength">Username must be longer that 5 characters</small>
+                <small class="text-danger" *ngIf="f.username.errors?.val">{{f.username.errors?.val.value}} username not allowed</small>
+            </div>
+        </div>
+        <div class="form-group my-2 py-2">
+            <label>Password</label>
+            <input formControlName="password" type="password" class="form-control">
+        </div>
+        <div class="form-group my-2 py-2">
+            <label>Confirm Password</label>
+            <input formControlName="confirmPassword" type="password" class="form-control">
+        </div>
+        <label>Address:</label>
+        <div class="container mx-3 px-3" formGroupName="address">
+            <div class="form-group my-2 py-2">
+                <label>Street</label>
+                <input formControlName="street" type="text" class="form-control">
+            </div>
+            <div class="form-group my-2 py-2">
+                <label>City</label>
+                <input formControlName="city" type="text" class="form-control">
+            </div>
+            <div class="form-group my-2 py-2">
+                <label>State</label>
+                <input formControlName="state" type="text" class="form-control">
+            </div>
+            <div class="form-group my-2 py-2">
+                <label>Pin Code</label>
+                <input formControlName="pincode" type="text" class="form-control">
+            </div>
+        </div>
+
+        <button class="btn btn-outline-primary m-1" type="submit">Submit</button>
+        <button (click)="loadAPI()" class="btn btn-outline-secondary m-1" type="submit">Load API Data</button>
+    </form>
+</div>

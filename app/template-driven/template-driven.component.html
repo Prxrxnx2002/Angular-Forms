@@ -1,0 +1,81 @@
+<div class="container">
+    <h1>Template Driven Form</h1>
+    <div class="alert alert-danger" role="alert" *ngIf="errMsg">{{errMsg}}</div>
+    <form #userForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="!submitted" novalidate>
+        <!-- {{userForm.value | json}}
+        <hr>{{userModel | json}} -->
+
+        <div class="form-group py-2 my-2">
+            <label for="name">Name</label>
+            <input name="name" type="text" #name="ngModel" [class.is-invalid]="name.invalid && name.touched" class="form-control" [(ngModel)]="userModel.name"   required>
+            <small class="text-danger" *ngIf="name.invalid && name.touched">Name is Required</small>
+        </div>
+
+        <!-- {{name.className //displays class info for name}}  -->
+
+        <div class="form-group py-2 my-2">
+            <label for="email">Email</label>
+            <input #email="ngModel" name="email" type="text" class="form-control" [(ngModel)]="userModel.email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" [class.is-invalid]="email.invalid && email.touched">
+            <small class="text-danger" *ngIf="email.invalid && email.touched">Email Pattern Invalid</small>
+        </div>
+        <div class="form-group py-2 my-2">
+            <label for="phone">Phone</label>
+            <input #phone="ngModel" name="phone" type="tel" class="form-control" [(ngModel)]="userModel.phone" pattern="[0-9]{10}" [class.is-invalid]="phone.invalid
+            && phone.touched" required>
+            <!-- <small class="text-danger" [class.d-none]="phone.valid || phone.untouched">Required and Must be 10 digits</small> -->
+            <div *ngIf="phone.errors && phone.invalid && phone.touched">
+                <small class="text-danger" *ngIf="phone.errors.required">Number is Required</small>
+                <small class="text-danger" *ngIf="phone.errors.pattern">Must be 10 digits</small>
+            </div>
+        </div>
+        <div class="form-group py-2 my-2">
+            <label for="topic">Topic:</label>
+            <select (blur)="validateTopic(topic.value)" (change)="validateTopic(topic.value)" #topic="ngModel" [class.is-invalid]="topicError
+            && topic.touched" class="form-select" name="topic" [(ngModel)]="userModel.topic"   required>
+                <option value="default">Select</option>
+                <option *ngFor="let topic of topics">{{topic}}</option>
+            </select>
+            <small class="text-danger" [class.d-none]="topic.untouched || !topicError">Please select a Topic</small>
+        </div>
+        <div class="mb-3">
+            <label>Time Preference</label>
+            <div class="form-check">
+                <input type="radio" name="timepref" class="form-check-input" value="morning" [(ngModel)]="userModel.timepref"   required>
+                <label>Morning</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" name="timepref" class="form-check-input" value="evening" [(ngModel)]="userModel.timepref"   required>
+                <label>Evening</label>
+            </div>
+        </div>
+        <div class="form-check mb-3">
+            <input name="subscribe" type="checkbox" class="form-check-input" [(ngModel)]="userModel.subscribe">
+            <label>Subscribe To Newsletter :)</label>
+        </div>
+        
+        <div ngModelGroup="address">
+            <label>Adress:</label>
+            <div class="form-group py-1 my-1">
+                <label for="Street">Street</label>
+                <input name="Street" type="text" class="form-control" [(ngModel)]="userModel.address.Street">
+            </div>
+            <div class="form-group py-1 my-1">
+                <label for="City">City</label>
+                <input name="City" type="text" class="form-control" [(ngModel)]="userModel.address.City">
+            </div>
+            <div class="form-group py-1 my-1">
+                <label for="State">State</label>
+                <input name="State" type="text" class="form-control" [(ngModel)]="userModel.address.State">
+            </div>
+            <div class="form-group py-1 my-1">
+                <label for="PinCode">Pin Code</label>
+                <input name="PinCode" type="text" class="form-control" [(ngModel)]="userModel.address.PinCode">
+            </div>
+        </div>
+        
+        <button class="btn btn-outline-primary" type="submit" [disabled]="userForm.invalid || topicError" [class.btn-outline-danger]="userForm.invalid || topicError" [class.btn-outline-primary]="userForm.valid">Submit</button>
+    </form>
+    <div *ngIf="submitted">
+        <h3 class="text-center text-success">Form Submitted! :)</h3>
+    </div>
+</div>
