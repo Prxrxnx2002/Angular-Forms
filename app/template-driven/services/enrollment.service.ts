@@ -17,6 +17,6 @@ export class EnrollmentService {
   }
 
   errorHandler(error: HttpErrorResponse){
-    return throwError(error)
+    return throwError(() => error)
   }
 }
