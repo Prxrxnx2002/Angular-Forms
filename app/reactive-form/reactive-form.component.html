@@ -1,16 +1,25 @@
 <div class="container">
-    <h2>Registration Form</h2>
-    {{regForm.value| json}}
-    <form [formGroup]="regForm">
+    <h1>Reactive Form</h1>
+    <!-- {{regForm.value| json}} -->
+    <form [formGroup]="regForm" (ngSubmit)="onSubmit()">
         <div class="form-group my-2 py-2">
             <label>Username</label>
             <input formControlName="username" type="text" class="form-control" [class.is-invalid]="f.username.invalid && f.username.touched">
             <!-- <small class="text-danger" [class.d-none]="f.username.valid || f.username.untouched">Username is Required</small> -->
             <div *ngIf="f.username.invalid && f.username.touched">
                 <small class="text-danger" *ngIf="f.username.errors?.required">Username is required</small>
-                <small class="text-danger" *ngIf="f.username.errors?.minlength">Username must be longer that 5 characters</small>
+                <small class="text-danger" *ngIf="f.username.errors?.minlength">Username must have atleast 5 characters</small>
                 <small class="text-danger" *ngIf="f.username.errors?.val">{{f.username.errors?.val.value}} username not allowed</small>
             </div>
+        </div>
+        <div class="form-group py-2 my-2">
+            <label for="email">Email</label>
+            <input formControlName="email" name="email" type="text" class="form-control" [class.is-invalid]="f.email.invalid && f.email.touched" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$">
+            <small class="text-danger" [class.d-none]="f.email.valid || f.email.untouched">Please enter a valid Email ID</small>
+        </div>
+        <div class="form-check mb-3">
+            <input formControlName="subscribe" name="subscribe" type="checkbox" class="form-check-input">
+            <label>Subscribe To Newsletter :)</label>
         </div>
         <div class="form-group my-2 py-2">
             <label>Password</label>
@@ -18,7 +27,8 @@
         </div>
         <div class="form-group my-2 py-2">
             <label>Confirm Password</label>
-            <input formControlName="confirmPassword" type="password" class="form-control">
+            <input formControlName="confirmPassword" type="password" class="form-control" [class.is-invalid]="regForm.errors?.misMatch">
+            <small class="text-danger" *ngIf="regForm.errors?.misMatch">Passwords don't match</small>
         </div>
         <label>Address:</label>
         <div class="container mx-3 px-3" formGroupName="address">
@@ -39,8 +49,8 @@
                 <input formControlName="pincode" type="text" class="form-control">
             </div>
         </div>
-
-        <button class="btn btn-outline-primary m-1" type="submit">Submit</button>
-        <button (click)="loadAPI()" class="btn btn-outline-secondary m-1" type="submit">Load API Data</button>
+        <button class="btn btn-outline-primary m-1" type="submit" [disabled]="!regForm.valid">Submit</button>
     </form>
+    <button (click)="loadAPI()" class="btn btn-outline-secondary m-1" type="button
+    ">Load API Data</button>
 </div>

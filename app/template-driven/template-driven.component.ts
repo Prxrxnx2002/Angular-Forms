@@ -32,12 +32,10 @@ export class TemplateDrivenComponent {
       this.submitted = true
     }
     console.log(this.userModel);
-    this.EnSer.enroll(this.userModel)
-    .subscribe(
-      data => console.log('Success!', data),
-      error => this.errMsg = error.statustext      
+    this.EnSer.enroll(this.userModel). subscribe(
+      response => console.log('success!', response),
+      error => console.log('Error!', error)      
     )
-    console.log(this.errMsg);
     
    
   }
